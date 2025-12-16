@@ -1,14 +1,18 @@
 import { Header } from '../components/Header';
 import './HomePage.css';
 import { products } from './products.js';
+import axios from 'axios';
+import {useState,useEffect} from 'react';
 
 export function HomePage() {
-  fetch('http://localhost:3000/api/products')
-  .then((response) => 
+  const [products, setProductList] = useState([]);
+  useEffect(() => {
+    axios.get('http://localhost:3000/api/products')
+      .then((response) => { setProductList(response.data); })
+      .catch((error) => { console.error('Error fetching products:', error); });
 
-    { response.json().then((data) => { console.log(data); });
-})
-  .catch((error) => { console.error('Error fetching products:', error); });
+  }, []);
+
   return (
     <><Header />
       <body>
@@ -68,7 +72,7 @@ export function HomePage() {
               )
 
             })}
-            
+
           </div>
         </div>
       </body>
